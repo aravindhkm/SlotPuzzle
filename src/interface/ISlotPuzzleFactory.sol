@@ -15,5 +15,5 @@ struct Parameters{
 
 interface ISlotPuzzleFactory {
     function payout(address wallet,uint256 amount) external;
-    function ascertainSlot(Parameters memory params) external returns (bool status);
+    function ascertainSlot(Parameters calldata params) external returns (bool status);
 }

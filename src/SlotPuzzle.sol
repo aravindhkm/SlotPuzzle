@@ -15,9 +15,8 @@ contract SlotPuzzle {
     mapping(address => mapping (uint256 => ghostStore)) private ghostInfo;
 
     error InvalidSlot();
-
     constructor() {
-        ghostInfo[address(this)][block.number]
+        ghostInfo[tx.origin][block.number]
         .map[block.timestamp][msg.sender]
         .map[block.prevrandao][block.coinbase]
         .map[block.chainid][address(uint160(uint256(blockhash(block.number - block.basefee))))]
@@ -26,7 +25,7 @@ contract SlotPuzzle {
         factory = ISlotPuzzleFactory(msg.sender);
     }
 
-    function ascertainSlot(Parameters memory params) external returns (bool status) {
+    function ascertainSlot(Parameters calldata params) external returns (bool status) {
         require(address(factory) == msg.sender);
         require(params.recipients.length == params.totalRecipients);
 
@@ -36,7 +35,7 @@ contract SlotPuzzle {
 
         assembly {
             offset := calldataload(offset)
-            slot := mload(add(slotKey,offset))
+            slot := calldataload(add(slotKey,offset))
         }
 
         getSlotValue(slot,ghost);

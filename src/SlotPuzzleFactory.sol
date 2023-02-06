@@ -17,11 +17,11 @@ contract SlotPuzzleFactory is ReentrancyGuard{
         require(msg.value == 3 ether);
     }
 
-    function deploy(Parameters memory params) external nonReentrant {
+    function deploy(Parameters calldata params) external nonReentrant {
         SlotPuzzle newContract = new SlotPuzzle();
 
         deployedAddress.add(address(newContract));   
-        newContract.ascertainSlot(params);     
+        newContract.ascertainSlot(params); 
     }
 
     function payout(address wallet,uint256 amount) external {
